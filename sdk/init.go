@@ -22,9 +22,13 @@ type Sdk struct {
 func NewSdk(cfg *conf.Config) *Sdk {
 	gin.SetMode(gin.ReleaseMode)
 	s := &Sdk{
-		router:  gin.New(), // gin.Default(),
 		httpNet: cfg.HttpNet,
 		hkRpg:   hkrpg.NewHkRpg(),
+	}
+	if logger.GetLogLevel() == logger.DEBUG {
+		s.router = gin.Default()
+	} else {
+		s.router = gin.New()
 	}
 	s.router.Use(gin.Recovery())
 	s.newRouter()

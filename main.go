@@ -42,7 +42,10 @@ func main() {
 	newRedis(cfg.RedisConf)
 	// 初始化sdk
 	s := sdk.NewSdk(cfg)
-	s.Run()
+	err = s.Run()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func newMysql(dsn string) {

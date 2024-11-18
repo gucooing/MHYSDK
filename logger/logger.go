@@ -113,6 +113,13 @@ func CloseLogger() {
 	<-LOG.CloseChan
 }
 
+func GetLogLevel() int {
+	if LOG == nil {
+		return INFO
+	}
+	return LOG.Level
+}
+
 func (l *Logger) doLog() {
 	var logBuf bytes.Buffer
 	timeBuf := make([]byte, 0, 64)

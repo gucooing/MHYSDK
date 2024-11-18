@@ -15,21 +15,29 @@ func ComboGranterApiGetConfigHandler(c *gin.Context) {
 	getConfigrsq := new(constant.GranterApiGetConfig)
 
 	data := &constant.GranterApiGetConfigData{
-		Protocol:                true,
-		QrEnabled:               true,
-		LogLevel:                "INFO",
-		AnnounceURL:             "https://hkrpg.alsl.xyz",
-		PushAliasType:           0,
-		DisableYsdkGuard:        true,
-		EnableAnnouncePicPopup:  true,
+		AnnounceURL:             "https://sdk.hoyoverse.com/hkrpg/announcement/index.html?sdk_presentation_style=fullscreen\\u0026game=hkrpg\\u0026game_biz=hkrpg_global\\u0026sdk_screen_transparent=true\\u0026auth_appid=announcement\\u0026authkey_ver=1\\u0026version=2.29\\u0026sign_type=2#/",
 		AppName:                 "崩坏RPG",
-		FunctionalSwitchConfigs: make([]string, 0),
+		DisableYsdkGuard:        false,
+		EnableAnnouncePicPopup:  false,
+		EnableUserCenter:        true,
+		FunctionalSwitchConfigs: struct{}{},
+		Protocol:                true,
+		PushAliasType:           0,
+		QrAppIcons:              nil,
+		QrCloudDisplayName:      "",
+		QrEnabled:               false,
+		LogLevel:                "INFO",
+		QrEnabledApps:           nil,
 	}
 	getConfigrsq.Retcode = 0
 	getConfigrsq.Message = "OK"
 	getConfigrsq.Data = data
 
 	c.JSON(200, getConfigrsq)
+}
+
+func Combo(c *gin.Context) {
+	c.String(200, "{\"retcode\":0,\"message\":\"OK\",\"data\":{\"vals\":{\"enable_user_center_v2\":\"false\",\"enable_telemetry_data_upload\":\"true\",\"enable_telemetry_h5log\":\"true\",\"enable_register_autologin\":\"true\",\"new_register_page_enable\":\"true\",\"h5log_filter_config\":\"{\\n\\t\\\"function\\\": {\\n\\t\\t\\\"event_name\\\": [\\\"report_set_info\\\", \\\"notice_close_notice\\\", \\\"apm_crash_add_custom_key_value\\\", \\\"hasScanFunc\\\", \\\"push_clear_local_notification\\\", \\\"push_add_local_notification\\\", \\\"launch_del_notification\\\", \\\"info_get_device_id\\\", \\\"getDeviceId\\\"]\\n\\t}\\n}\",\"enable_twitter_v2\":\"true\",\"appsflyer_config\":\"{\\n  \\\"enabled\\\": true\\n}\",\"enable_attribution\":\"true\",\"network_report_config\":\"{ \\\"enable\\\": 1, \\\"status_codes\\\": [200], \\\"url_paths\\\": [\\\"combo/postman/device/setAlias\\\"] }\"}}}")
 }
 
 func CompareProtocolVersion(c *gin.Context) {

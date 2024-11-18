@@ -20,6 +20,7 @@ type HkRpg struct {
 
 func (h *HkRpg) NewRouter(router *gin.Engine) {
 	router.GET("/query_dispatch", h.queryDispatchHandler)
+	router.GET("/query_dispatch/gucooing/sdk", h.queryDispatchHandler)
 }
 
 func NewHkRpg() *HkRpg {

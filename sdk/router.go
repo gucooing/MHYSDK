@@ -1,11 +1,6 @@
 package sdk
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"log"
-
-	"mhy-sdk/logger"
 	"mhy-sdk/sdk/combo"
 	hkrphgo "mhy-sdk/sdk/hkrpg-go"
 	"mhy-sdk/sdk/mdk"
@@ -16,9 +11,11 @@ import (
 func (s *Sdk) newRouter() {
 	s.router.POST("/account/risky/api/check", riskyApiCheckHandler)
 	s.router.POST("/apm/dataUpload", apmdataUpload)
+	s.router.POST("/data_abtest_api/config/experiment/list", getExperimentListHandler)
 	hkrpg := s.router.Group("/hkrpg_:type")
 	{
 		hkrpg.GET("/combo/granter/api/getConfig", combo.ComboGranterApiGetConfigHandler) // 获取服务器配置
+		hkrpg.GET("/combo/box/api/config/sdk/combo", combo.Combo)
 		hkrpg.POST("/combo/granter/api/compareProtocolVersion", combo.CompareProtocolVersion)
 		hkrpg.POST("/combo/granter/login/beforeVerify", combo.BeforeVerify)
 		hkrpg.POST("/combo/red_dot/list", combo.RedDotList)
@@ -44,21 +41,12 @@ func riskyApiCheckHandler(c *gin.Context) {
 	c.String(200, "{\"retcode\":0,\"message\":\"OK\",\"data\":{\"id\":\"none\",\"action\":\"ACTION_NONE\",\"geetest\":null}}")
 }
 
+func getExperimentListHandler(c *gin.Context) {
+	c.Header("Content-type", "application/json")
+	_, _ = c.Writer.WriteString("{\"retcode\":0,\"success\":true,\"message\":\"\",\"data\":[{\"code\":1000,\"type\":2,\"config_id\":\"14\",\"period_id\":\"6125_197\",\"version\":\"1\",\"configs\":{\"cardType\":\"direct\"}}]}")
+}
+
 func apmdataUpload(c *gin.Context) {
-	req := c.Request
-	body, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		return
-	}
-	var data map[string]interface{}
-	if err := json.Unmarshal(body, &data); err != nil {
-		log.Fatal(err)
-	}
-	formattedJSON, err := json.MarshalIndent(data, "", "  ")
-	if err != nil {
-		log.Fatal(err)
-	}
-	logger.Debug("/apm/dataUpload", formattedJSON)
 	c.JSON(200, gin.H{
 		"code": 0,
 	})
